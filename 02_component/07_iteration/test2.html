@@ -90,141 +90,86 @@
 
     <script type="text/babel">
 
-        const {useState} = React;
+        const {uesState} = React;
 
         function Header() {
 
             return(
-                <div className = "header">
-                    <h1>오늘의 할 일!! {new Date().toLocaleDateString()}</h1>
-                </div>
-            );
+
+            <div className="header"> 
+                <h1>나홀로 연습 {new Date().toLocaleDateString()}</h1>
+            </div>
+
+            );         
         }
 
-        function TodoList(){
 
-            const [todos, setTodos] = useState([
-                {id: 1, description: '할일 목록을 추가해주세요', isDone: false}
-            ]);
+        function ToDOList(){
 
-            const [inputText, setInputText] = useState('');
-            const [nextId, setNextId] = useState(2);
+            const [todos, setTodos] = uesState([]);
+            const [inputText, setInputText] = uesState('');
+            const [nextId, setNextId] = uesState(1);
 
             const onChangeHandler = e => {
                 setInputText(e.target.value)
             }
-
-            const onClickHandler = () => {
+            const onClick = () => {
+                // concat : todos 배열에 내가 적은 내용 추가
                 const changeTodos = todos.concat({
                     id: nextId,
-                    description: inputText,
-                    isDone: false
+                    description: inputText
                 });
 
-                setInputText('');
-                setNextId(nextId +1);
                 setTodos(changeTodos);
-
-            } 
-
-            return(
-
-            <>
-                <h3>ToDo-List</h3>
-                <div className="todo-list">
-                    <TodoItems
-                        todos = {todos}
-                        setTodos = {setTodos}
-                    />
-                </div>
-                <div className="append-list">
-                    <input 
-                        type="text"
-                        value={inputText}
-                        onChange={onChangeHandler}
-                    />
-                    <button onClick={onClickHandler}>추가하기</button>    
-                </div>
-            </>
-
-            );
-
-        }
-
-        function TodoItems({todos, setTodos}){
-
-            const removeTodo = id => {
-                const removeList = todos.filter(todo => todo.id !== id)
-
-                setTodos(removeList);
-            }
-
-            const onChangeHandler = e => {
-                const changeIsDoneList = todos.map(
-                    todo => {
-                        if(todo.id === parseInt(e.target.id)){
-                            todo.isDone = e.target.checked;
-                        }
-
-                        return todo;
-                    }
-                )
-
-                setTodos(changeIsDoneList);
+                setInputText("");
+                setNextId(nextId +1);
             }
 
             return(
                 <>
-                    {
-                        todos.map( 
-                            todo => <p key={todo.id}> 
-                                        <input type="checkbox" id={todo.id} onChange={onChangeHandler}/>
-                                        <label for="{todo.id}" style={{textDecoration: todo.isDone ? 'line-through' : 'none'}}>{todo.description}</label>
-                                        <button onClick={() => removeTodo(todo.id)}>X</button>
-                                    </p>
-                        )
-                    }
+                    <input 
+                        type="text"
+                        value={inputText}    
+                        onChange={onChangeHandler}
+                    />
+                    <button onClick={onClick}>추가</button>
                 </>
-             
             );
-           
         }
 
-        function Content() {
+        function Content(){
+
             return(
-
-            <div className="content">
-                <TodoList/>    
-            </div>
-
+               <div className="content">
+                    <ToDoList/>
+               </div>
             );
         }
 
         function Footer(){
 
             return(
-
-                <div className="footer">
-                    <p>Copyright 2024. ohgiraffers</p>
+                <div className = "footer">
+                    <p>오로로로로</p>
                 </div>
             );
         }
 
-        // 위에 것들 다 하나로 묶어 놓음
-        function App(){
+        function Form(){
 
             return(
 
-            <div className="container">
-                <Header/>
-                <Content/>
-                <Footer/>
-            </div>
-
+                <div className="container">
+                    <Header/>
+                    <Content/>
+                    <Footer/>
+                </div>
+              
             );
         }
 
-        ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+        ReactDOM.createRoot(document.getElementById('root')).render(<Form/>);
+
     </script>
 </body>
 </html>
