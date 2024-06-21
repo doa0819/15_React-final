@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+
+    <!--!!!중요!!!-->
+    
+    <div id="root"></div>
+
+    <!--
+        컴포넌트의 합성
+        컴포넌트는 자신의 출력에 따른 컴포넌트를 참조할 수 있다.
+        컴포넌트는 최대한 재사용이 가능한 크기로 작게 유지해야 하며,
+        순수 함수 처럼 작성 되어야 한다.
+    -->
+
+    <script type="text/babel">
+
+        // const user = {
+        //     name: '푸바오',
+        //     age: 5,
+        //     phone: '010-1234-5678',
+        //     email: 'fubao@gmail.com'
+        // };
+
+        let name = '푸바오';
+        let age = 5;
+        let phone = '010-1234-5678';
+        let email = 'fubao@gmail.com';
+
+        //   const user = {name, age, phone, email};  같은거다!! 축약 한것!!!
+        // const user = {
+        //     name: name,             // key,value 이름 똑같다
+        //     age: age,
+        //     phone: phone,
+        //     email: email
+        // }
+
+        const user = {name, age, phone, email};         // 프로퍼티 단축 구문
+
+
+        /* 컴포넌트 > 엘리먼트 -> 이 컴포넌트를 또 컴포넌트 안에 넣기 가능
+            컴포넌트 <- 컴포넌트 <- 엘리먼트
+            <h1>{user.name}</h1>  <- 이 문법이 JSX 이다
+        */
+
+        // 컴포넌트
+        function NameCard(){
+
+            // 엘리먼트
+            return <h1>{user.name}</h1>
+        }
+
+        function AgeCard(){
+            return <h2 style={{color: 'organgered'}}>{user.age}</h2>
+        }
+
+        function PhoneCard(){
+            return <h3 style={{color:'blue'}}>{user.phone}</h3>
+        }
+
+        function EmailCard(){
+            return <h3 style={{backgroundColor:'yello'}}>{user.email}</h3>
+        }
+
+
+        function UserInfo(){
+            return(
+                <div style={{width: 300, border:'1px solid black'}}>
+                    <NameCard/>
+                    <AgeCard/>
+                    <PhoneCard/>
+                    <EmailCard/>
+                </div>
+            );
+        }
+
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<UserInfo/>);
+
+
+    </script>
+</body>
+</html>

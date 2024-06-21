@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script crossorigin src="https://unpkg.com/prop-types@15.8.1/prop-types.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+
+        const {useState} = React;
+
+        function App(){
+
+            const [names,setnames] = useState([
+
+                // key, value 로 관리를 한다
+                {id: 1, name: '푸바오'},
+                {id: 2, name: '루이바오'},
+                {id: 3, name: '후이바오'}
+                
+            ]);
+
+            const [inputText, setInputText] = useState('');
+            const [nextId, setNextId] = useState(4);        // 이미 3번 까지 있으니 4번 부터 설정(key 값 설정중)
+
+            const onChangeHandler = e => setInputText(e.target.value);
+            const onClickHandler = () => {
+                alert(`${inputText} 가 추가 되었습니다.`);
+                /* concat : names 라는 배열에 우리가 만든 객체를 추가 */
+                const changedNames = names.concat({
+                    id: nextId,
+                    name : inputText
+                });
+
+                setNextId(nextId +1);
+                setnames(changedNames);
+                setInputText('');
+            }
+
+            const onRemove = id => {
+                
+                /*
+                    배열.filter(callback)
+                    기존 배열에서 callback 함수를 각 요소마다 실행하고 true 를 반환하는 요소들 만으로
+                    다시 배열을 재정의 하여 반환하는 배열의 메소드.
+                */
+
+                const changedNames = names.filter(name => name.id !== id);
+
+                setnames(changedNames);
+
+            }
+
+
+            // ul 태그에 반복적으로 나타나게 할 것이다!
+            // onDoubleClick : li 를 더블클릭하면 삭제 되게 만들것이다
+
+            const nameList = names.map(name => <li key={name.id} onDoubleClick={() => onRemove(name.id)}> {name.name} </li>)
+            // const nameList = names.map(name => <li key={name.id}> {name.name} </li>)
+
+
+            return(
+                <>
+                    <input 
+                        type="text"
+                        value={inputText}
+                        onChange={onChangeHandler}
+                    />
+                    <button onClick={onClickHandler}>등록하기</button>
+                    <ul>{nameList}</ul>
+                </>
+            );
+        }
+        ReactDOM.createRoot(document.getElementById('root')).render(<App/>)
+    </script>
+</body>
+</html>
