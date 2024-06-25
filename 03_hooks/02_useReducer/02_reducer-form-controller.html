@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script crossorigin src="https://unpkg.com/prop-types@15.8.1/prop-types.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+
+        /*
+            06_event
+            05_multioke-function-component-event-handling 비교해서 공부
+        
+        */
+
+        function RegistForm() {
+
+            const {useReducer} = React;
+
+            function reudcer (state, action) {
+
+
+                console.log('state', state);
+                console.log('action', action);
+
+                return {
+
+                    ...state,       // 바뀔수도 있고 안바뀔수도 있어서 일단 복사
+                    [action.name]: action.value         //  [action.name] : key 값으로 사용
+
+                }
+
+            }
+
+            const [state, dispatch] = useReducer(reudcer, {
+                name: '',
+                nickname: ''
+            })
+
+            const {name, nickname} = state;
+            // const name = state.name // 위에랑 같은 의미
+
+            const onChangeHandler = e => {
+                dispatch(e.target);
+            }
+
+            return(
+
+                <>
+                    <label>이름 : </label>
+                    <input type="text" name="name" onChange={onChangeHandler}/>
+                    <br/>
+                    <label> 닉네임 : </label>
+                    <input type="text" name="nickname" onChange={onChangeHandler} />
+                    <br/>
+                    <div>
+                        <h3>입력한 이름 :{name} </h3>    
+                        <h3>입력한 닉네임 : {nickname}</h3>    
+                    </div>
+                </>
+
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<RegistForm/>);
+    </script>
+    
+</body>
+</html>

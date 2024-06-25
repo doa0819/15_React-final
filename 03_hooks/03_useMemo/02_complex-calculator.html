@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script crossorigin src="https://unpkg.com/prop-types@15.8.1/prop-types.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+
+        const {useState} = React;
+
+        // num = hardNumber
+
+        // hardSum 될떄 마다 hardCalculator 함수 안에 있는 반복문이 계속 작동해서 버벅거림이 있다
+        const hardCalculator = (num) => {
+            console.log('요상한 계산기')
+
+            // 반복문 -> return 이 느리게 되게끔 만드는중 
+            for(let i = 0; i < 199999999; i++){
+
+            }
+
+
+            return num + 10000;
+        }
+
+        const easyCalculator = (num) => {
+            console.log('정상적인 계산지')
+
+            return num +1;
+        }
+
+        function App() {
+
+            const [hardNumber, setHardNumber] = useState(0);
+            const [easyNumber, setEasyNumber] = useState(0);
+
+            /* 
+                우리가 예상한 바로는 요상한 계산기는 시간이 오래 걸리는 것을 예측 가능
+                하지만, 쉬운 계산기도 오래 걸림 
+                쉬운 계산기 동작 시에도 state 가 바뀌면 App 컴포넌트가 리렌더링 된다
+                그렇다는 건 hardSum  지역변수도 같이 초기화가 되기 떄문에 
+                둘 다 동작을 하게 된다. 
+            */
+
+            const hardSum = hardCalculator(hardNumber);     
+            const easySum = easyCalculator(easyNumber);  
+
+            return(
+
+                <>
+                    <h3>계산이 오래걸리는 요상한 계산기</h3>
+
+                    <input 
+                    type="number" 
+                    value={ hardNumber }        // hardNumber : 관리해야 하는 state
+                    onChange={ e => setHardNumber(parseInt(e.target.value))}        // (e.target.value) <- 우리가 입력한 값 setHardNumber 바꿔주겠다
+                    />
+
+                    <span>+ 10000 = { hardSum }</span>
+
+                    <h3>계산이 금방되는 정상적인 계산기</h3>
+
+                    <input 
+                    type="number" 
+                    value={ easyNumber }        // hardNumber : 관리해야 하는 state
+                    onChange={ e => setEasyNumber(parseInt(e.target.value))}        // (e.target.value) <- 우리가 입력한 값 setHardNumber 바꿔주겠다
+                    />
+
+                    <span>+ 10000 = { easySum }</span>
+                </>
+
+            );
+        }
+        
+        ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+    </script>
+</body>
+</html>
