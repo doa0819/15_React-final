@@ -27,7 +27,9 @@
             return(
                 <>
                     <button onClick={() => {setIstrue(!isTrue)}}>타이머 토글</button>
-                    {isTrue && <Timer/>}
+                    {isTrue && <Timer/>} 
+                    {/* isTrue && <Timer/> 
+                        -> isTrue 가 true 일때만 동작하겠다. */}
                     {/* isTrue ? <Timer/> : null */}
                     
                 </>
@@ -38,21 +40,24 @@
         
         function Timer(){
 
-useEffect (
-    () => {
-        console.log('Timer 컴포넌트가 마운트 될 떄 동작함');
-        console.log('타이머가 동작함');
-        const timer = setInterval( () => {
-            console.log(new Date(). toLocaleTimeString());
-        }, 1000);
+
+            // setInterval : 일정 시간 간격으로 반복적으로 함수를 호출하는 기능
+            // clearInterval :  반복 호출을 중지하는 역할을 합니다.
+            useEffect (
+                () => {
+                    console.log('Timer 컴포넌트가 마운트 될 떄 동작함');
+                    console.log('타이머가 동작함');
+                    const timer = setInterval( () => {
+                        console.log(new Date(). toLocaleTimeString());
+             }, 1000);
 
         /* return 구문에서 함수를 반환하면 해당 컴포넌트를 언마운트 시 setInterval 을 통해 interval 을 종료 시킨다 */
         // return 구문이 useEffect 청소해 주는 단계이다! 만약 css,html,js 보다 React 가 느리면 여기서 메모리가 세고 있는거다
-        return () => {
-            clearInterval(timer);       //clearInterval : interval 를 지워준다(두번씩 동작 안한다)
-            console.log('타이머가 종료됩니다')
-        }
-    }, []
+            return () => {
+                clearInterval(timer);       //clearInterval : interval 를 지워준다(두번씩 동작 안한다)
+                console.log('타이머가 종료됩니다')
+            }
+                    }, []
 )
 
 return(

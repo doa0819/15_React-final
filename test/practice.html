@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script crossorigin src="https://unpkg.com/prop-types@15.8.1/prop-types.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+
+        const {useState, useEffect, useMemo, useReducer} = React;
+
+        function Practice1(){
+
+            const [lists, setLists] = useState([{
+                inputText: '',
+                nextId: ''
+            }]);
+            const [inputText, setInputText] =  useState('');
+            const [nextId, setNextId] = useState(1);
+
+            const onChangeHandler = e => {
+                setInputText(e.target.value)
+            };
+            const onClickHandler = () => {
+                const inputChange = lists.concat({
+                    description : inputText,
+                    id: nextId
+                });
+
+                setInputText('');
+                setNextId(nextId +1);
+                setLists(inputChange);
+            }
+
+
+
+            return(
+                <>
+               
+                <div>
+                    <input 
+                        type="text"
+                        value={inputText}
+                        onChange={onChangeHandler}
+                    />
+                    <button onClick={onClickHandler}>추가</button>
+                </div>
+
+                <div>
+
+                    
+                    
+                        {lists.map(
+                            list => {
+                                return(
+
+                                <p key={list.id}>
+                                <label>{list.description}</label>
+                                </p>
+
+                                )
+                              
+                            }
+                        )}
+                        
+                    
+                </div>
+
+
+                </>
+                  
+
+               
+            );
+        }
+
+        function Practice2(){
+
+            const [count, setCount] = useState(0);
+
+            
+
+            useEffect(() => {
+
+                return() => {}
+            })
+
+            console.log('렌더링완료');
+
+
+            return(
+
+                <>
+                    <h1>{count}</h1>
+                    <button onClick={() => setCount(count+1)}>+ 1</button>
+
+                    <u/>
+
+
+
+
+                </>
+
+              
+
+                
+            );
+        }
+
+
+
+        function Practice(){
+
+            return(
+
+            <>
+                <Practice1/>
+                <Practice2/>
+            </>
+            );
+        }
+
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<Practice/>);
+    </script>
+</body>
+</html>
