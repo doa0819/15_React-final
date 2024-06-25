@@ -88,11 +88,12 @@
             
 
             useEffect(() => {
-
-                return() => {}
-            })
+                
+                console.log('count 값이 바뀜', count);
+            },[count])
 
             console.log('렌더링완료');
+         
 
 
             return(
