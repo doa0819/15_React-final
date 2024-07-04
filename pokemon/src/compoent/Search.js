@@ -28,7 +28,7 @@ function Search() {
     
     return(
         <div>
-            <h1>여기는 조회 하는곳</h1>
+            <h1>여기는 조회 하는곳이다 이 자식아</h1>
             <input 
                 type="text"
                 value={inputText}
