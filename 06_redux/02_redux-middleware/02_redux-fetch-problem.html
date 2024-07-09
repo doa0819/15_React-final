@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/redux@4.2.0/dist/redux.js"></script>
+    <script src="https://unpkg.com/react-redux@8.0.4/dist/react-redux.js"></script>
+    <script src="http://unpkg.com/redux-actions@2.6.5/dist/redux-actions.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        /*========================module=========================*/
+        // https://jsonplaceholder.typicode.com/users -> 우리가 가져올 데이터베이스
+
+        const { createActions, handleActions } = ReduxActions;
+
+        // 미들웨어 안썼을 떄 문제점 
+
+        //초기값
+        const initState = [];
+
+        //액션타입
+        /* 
+            만약에 액션의 타입이 언더스코어(스네이크 표기법)는
+            카멜케이스로 치환되어 함수의 이름으로 사용할 수 있다.
+            예) couont/INCREASE => increase();
+                FETCH_DATA => fetchData();  -> 이렇게 사용 가능
+        */
+        const FETCH_DATA = 'FETCH_DATA';
+        
+        //액션함수
+        // async,await 로 동기작업 처럼 진행 함 (그래서 기다려 주고 출력이 되지만)
+        const {fetchData} = createActions({
+            [FETCH_DATA] : async () => {                          //type : [FETCH_DATA], payload : () => {} // 데이터를 안넣고 끌고 올거니깐 넣을 필요 없다.
+
+                const response=
+                await fetch('https://jsonplaceholder.typicode.com/users')       // response 이 안에 10명의데이터가 들어감
+                .then(res => res.json())
+                
+
+                /*비동기 처리의 await 를 기다렸다가 console.log 테스트*/
+                console.log('패치를 기다린 후 나오는 결과 : ' , response);      // 10명의 데이터 배열로 들어가 있음
+
+                // Promise( return [...response];) 객체 여서 배열 사용할 수 없다
+                /*
+                
+                    response 를 반환할 때 비동기 작업은 아직 실행중이다.
+                    결과가 아직 만들어 지지 않은 상태인데 값을 리턴을 해버리고, 
+                    Promise 객체 자체를 반환해 버린다.
+                    즉, reture 구문은 비동기 흐름과는 관계 없이 해당 함수 자체를 
+                    종료 시키며, 컨트롤을 할 수 없게 된다.
+
+
+                */
+                return [...response];       // response 를 복사함 / paylod 에 10명의 데이터 넣어줌  / return 으로 payload 전달
+            }         
+        })
+
+        console.log('fetchData() : ', fetchData());
+
+        //리듀서
+        const reducer = handleActions(
+            {
+                [FETCH_DATA] : (state, {payload}) => {
+
+                    // 결론적으로 우리가 응답은 객체는 배열이 아닌 promise 객체가 된다.
+                    console.log('payload', payload);
+
+                    // 그렇기 때문에 promise 객체가 넘어와서 스프레드 연산을 할 수 없게 된다. 
+                    // 오류 발생
+                    return[...payload]          // Promise 로 출력이 된다
+                }
+            }, initState
+        )
+
+
+        /*==================compoent(ui)=========================*/
+
+        function App() {
+
+            const {useDispatch, useSelector} = ReactRedux;
+
+            const dispatch = useDispatch();
+            const users = useSelector(state => state);
+
+            const onClickHandler = () => {
+
+                dispatch(fetchData());
+
+            }
+
+            return(
+                <>
+                
+                    <h1>회원목록</h1>
+                    <button onClick={onClickHandler}>조회하기</button>
+
+                </>
+            );
+        }
+
+        /*======================store.js=========================*/
+        const {createStore} = Redux;
+
+        const store = createStore(reducer);
+        /*======================index.js=========================*/
+
+        const {Provider} = ReactRedux;
+
+        ReactDOM.createRoot(document.getElementById('root')).render(
+            <Provider store ={store}>
+                <App/>
+            </Provider>
+       );
+
+        /*===========================================*/
+    </script>
+    
+</body>
+</html>

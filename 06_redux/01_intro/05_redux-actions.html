@@ -28,7 +28,7 @@
        // count 누르면 1씩 올라가게 할것 
 
         /*----------------------------모듈(패키지)--------------------------------*/
-        // 초기값
+        // 초기값(state)
         const initState = 0;
 
         // 액션
@@ -36,7 +36,7 @@
         // type, payload
 
         // type : action type 은 상수로 정의 / 접두사를 붙이는 이유는 다른 모듈과 이름이 겹치지 않게 하기 위함이다
-        const INCREMENT = 'count/INCREASE';
+        const INCREMENT = 'count/INCREASE';         // /로 count 에다가 INCREASE, DECREASE 묶어 놓은 거다
         const DECREMENT = 'count/DECREASE';
 
         // 1. createAction (type, payload) 사용    
@@ -65,7 +65,7 @@
 
         // 중첩 구조분해 할당으로 count 를 사용하는 것이 아닌 increase 와 decrease 를 직접 사용해보자
         const {count: {increase,decrease}} = createActions ({
-            [INCREMENT] : (amount = 1) => ({ incrementValue: amount}),
+            [INCREMENT] : (amount = 1) => ({ incrementValue: amount}),          //type: INCREMENT   patload: (amount = 1) => ({ incrementValue: amount})
             [DECREMENT] : (amount = 1) => ({ decrementValue: amount})
 
         })
@@ -82,10 +82,12 @@
 
         const reducer = handleActions(
             {
-
+                // state : 초기값(0) 들어 있는 상태
+                // type: [INCREMENT] 
+                // patload:  (state, {payload: {incrementValue}})
                 [INCREMENT] : (state, {payload: {incrementValue}}) => {
                     console.log(state);
-                    return state + incrementValue;
+                    return state + incrementValue;      // 초기값 0 + incrementValue 1 를 하겠다.
                 },
 
                 [DECREMENT] : (state, {payload: {decrementValue}}) =>{
@@ -101,7 +103,7 @@
             const dispatch = useDispatch();
 
             const increaseCount = () => {
-                dispatch(increase());
+                dispatch(increase());           // onclick 핸들러 누르면 -> reducer 쪽으로 간다 increase <- 액션함수
             }
 
             const decreaseCount = () => {
